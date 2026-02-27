@@ -69,6 +69,7 @@ function enterExitMagicChallenges() {
     
     if (game.inHell) {game.magifolds = new Decimal(1)}
     else {game.magifolds = game.magicScore1.add(1).mul(game.magicScore2.add(1)).mul(game.magicScore3.add(1)).mul(game.magicScore4.add(1))}
+    if (milestones >= 3) game.magifolds = game.magicScore1.add(1).mul(game.magicScore2.add(1)).mul(game.magicScore3.add(1)).mul(game.magicScore4.add(1)).mul(Math.log10(game.fire)
     document.getElementById("magifolds").textContent = format(game.magifolds, 0)
     if (game.darkMagicUpgradesBought[3]) {document.getElementById("magifoldEffect").textContent = format(game.magifolds.pow(8), 2)}
     else if (game.magicUpgradesBought[18]) {document.getElementById("magifoldEffect").textContent = format(game.magifolds.pow(6), 2)}
