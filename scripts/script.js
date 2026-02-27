@@ -2056,6 +2056,7 @@ function updateSmall() {
 		if (game.unlocks >= 33) game.oganessonPerSecond = game.oganessonPerSecond.mul(new Decimal(1.5).pow(game.darkEssenceUpgradesBought[1].pow(0.6)))
 		if (game.unlocks >= 35 && game.nuclearPastaState == 5) game.oganessonPerSecond = game.oganessonPerSecond.mul(Decimal.min(new Decimal(1.5).pow(game.nuclearPasta.pow(0.6)), 1e30))
 		if (game.milestones > 0) game.oganessonPerSecond = game.oganessonPerSecond.pow(milestone1Bonus.add(1))
+		if (game.milestones >= 5) game.oganessonPerSecond = game.oganessonPerSecond.mul(2)
 		document.getElementById("oganesson").textContent = format(game.oganesson, 0)
 		document.getElementsByClassName("resourceText")[26].textContent = format(game.oganesson, 0)
 		document.getElementById("oganessonPerSecond").textContent = format(game.oganessonPerSecond, 0)
