@@ -54,6 +54,7 @@ function enterExitMagicChallenges() {
   }
   else if (game.challengesActive) {
     //A bunch of stuff for setting scores
+    if (game.milestones >= 4) game.magicScoreToGet = game.magicScoreToGet.mul(1.1)
     if (game.noOfSelectedChallenges == 1 && game.magicScoreToGet.gt(game.magicScore1)) game.magicScore1 = game.magicScoreToGet
     else if (game.noOfSelectedChallenges == 2 && game.magicScoreToGet.gt(game.magicScore2)) game.magicScore2 = game.magicScoreToGet
     else if (game.noOfSelectedChallenges == 3 && game.magicScoreToGet.gt(game.magicScore3)) game.magicScore3 = game.magicScoreToGet
@@ -69,7 +70,7 @@ function enterExitMagicChallenges() {
     
     if (game.inHell) {game.magifolds = new Decimal(1)}
     else {game.magifolds = game.magicScore1.add(1).mul(game.magicScore2.add(1)).mul(game.magicScore3.add(1)).mul(game.magicScore4.add(1))}
-    if (milestones >= 3) game.magifolds = game.magicScore1.add(1).mul(game.magicScore2.add(1)).mul(game.magicScore3.add(1)).mul(game.magicScore4.add(1)).mul(Math.log10(game.fire)
+    if (game.milestones >= 3) game.magifolds = game.magicScore1.add(1).mul(game.magicScore2.add(1)).mul(game.magicScore3.add(1)).mul(game.magicScore4.add(1)).mul(Math.log10(game.fire)
     document.getElementById("magifolds").textContent = format(game.magifolds, 0)
     if (game.darkMagicUpgradesBought[3]) {document.getElementById("magifoldEffect").textContent = format(game.magifolds.pow(8), 2)}
     else if (game.magicUpgradesBought[18]) {document.getElementById("magifoldEffect").textContent = format(game.magifolds.pow(6), 2)}
