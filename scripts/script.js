@@ -1649,6 +1649,7 @@ function updateSmall() {
     game.cyanSigilPowerPerSecond = game.cyanSigils.pow(2).div(100).mul(game.cyanSigilUpgradesBought[0].add(1))
     if (game.unlocks >= 12) game.cyanSigilPowerPerSecond = game.cyanSigilPowerPerSecond.pow(Decimal.min(new Decimal(1.15).pow(game.indigoSigilUpgradesBought[1].pow(0.5)),30))
     if (game.voidMagicUpgradesBought[2]) game.cyanSigilPowerPerSecond = game.cyanSigilPowerPerSecond.pow(2)
+	  if (game.milestones >= 6) game.cyanSigilPowerPerSecond = game.cyanSigilPowerPerSecond.pow(1.1)
     document.getElementById("cyanSigilPower").textContent = format(game.cyanSigilPower, 2)
     document.getElementById("cyanSigilPowerPerSecond").textContent = format(game.cyanSigilPowerPerSecond, 2)
   }
@@ -1669,6 +1670,7 @@ function updateSmall() {
     document.getElementById("blueSigilEffect").textContent = format(game.blueSigils.add(1).pow(3), 0)
     game.blueSigilPowerPerSecond = game.blueSigils.pow(2).div(100).mul(game.blueSigilUpgradesBought[0].add(1))
     if (game.unlocks >= 13) game.blueSigilPowerPerSecond = game.blueSigilPowerPerSecond.pow(new Decimal(1.3).pow(game.violetSigilUpgradesBought[1].pow(0.5)))
+	  if (game.milestones >= 6) game.blueSigilPowerPerSecond = game.blueSigilPowerPerSecond.pow(1.1)
     document.getElementById("blueSigilPower").textContent = format(game.blueSigilPower, 2)
     document.getElementById("blueSigilPowerPerSecond").textContent = format(game.blueSigilPowerPerSecond, 2)
   }
@@ -1688,6 +1690,7 @@ function updateSmall() {
     document.getElementById("indigoSigilsToGet").textContent = format(game.indigoSigilsToGet, 0)
     game.indigoSigilPowerPerSecond = game.indigoSigils.pow(2).div(100).mul(game.indigoSigilUpgradesBought[0].add(1))
     if (game.tomeUpgradesBought[0]) game.indigoSigilPowerPerSecond = game.indigoSigilPowerPerSecond.pow(1.3)
+	  if (game.milestones >= 6) game.indigoSigilPowerPerSecond = game.indigoSigilPowerPerSecond.pow(1.1)
     document.getElementById("indigoSigilPower").textContent = format(game.indigoSigilPower, 2)
     document.getElementById("indigoSigilPowerPerSecond").textContent = format(game.indigoSigilPowerPerSecond, 2)
   }
@@ -1706,6 +1709,7 @@ function updateSmall() {
     document.getElementById("violetSigilEffect").textContent = format(game.violetSigils.add(1).pow(5), 0)
     document.getElementById("violetSigilsToGet").textContent = format(game.violetSigilsToGet, 0)
     game.violetSigilPowerPerSecond = game.violetSigils.pow(2).div(100).mul(game.violetSigilUpgradesBought[0].add(1))
+	  if (game.milestones >= 6) game.violetSigilPowerPerSecond = game.violetSigilPowerPerSecond.pow(1.1)
     document.getElementById("violetSigilPower").textContent = format(game.violetSigilPower, 2)
     document.getElementById("violetSigilPowerPerSecond").textContent = format(game.violetSigilPowerPerSecond, 2)
   }
@@ -1727,6 +1731,7 @@ function updateSmall() {
     document.getElementById("pinkSigilsToGet").textContent = format(game.pinkSigilsToGet, 0)
     game.pinkSigilPowerPerSecond = game.pinkSigils.pow(2).div(100).mul(game.pinkSigilUpgradesBought[0].add(1))
     if (game.tomeUpgradesBought[1]) game.pinkSigilPowerPerSecond = game.pinkSigilPowerPerSecond.mul(game.totalTomes.pow(0.5).mul(3).add(1))
+	  if (game.milestones >= 6) game.pinkSigilPowerPerSecond = game.pinkSigilPowerPerSecond.pow(1.1)
     document.getElementById("pinkSigilPower").textContent = format(game.pinkSigilPower, 2)
     document.getElementById("pinkSigilPowerPerSecond").textContent = format(game.pinkSigilPowerPerSecond, 2)
   }
