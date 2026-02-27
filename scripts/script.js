@@ -92,6 +92,7 @@ var autosaveStarted = false;
 function reset() {
 	game = {
     unlockedAchievements: [0,0,0,0,0,0,0,0,0,0,0],
+	milestones: 0,	
 
     unlocks: 0,
     lastMajorChangeVersion: 3, //tracks what version was last played so adjustments can be made in the loading code when necessary. 
@@ -1309,6 +1310,8 @@ function updateSmall() {
   if (game.inHell) alertString += "<a style='color:#0ff'>!</a> You are in hell<br>"
   if (game.sigilResetterActive) alertString += "<a style='color:#0ff'>!</a> Sigil resetter is enabled<br>"
   document.getElementById("alerts").innerHTML = alertString
+
+	milestone1Bonus = game.milestones.mul(0.01)
   
   game.goldPerSecond = game.miners.mul(game.fire.div(10).add(1).log10().mul(2).add(1))
   if (game.unlocks >= 2) {
@@ -1350,6 +1353,7 @@ function updateSmall() {
     if (game.holyOctahedronUpgradesBought[1]) game.goldPerSecond = game.goldPerSecond.mul(1e250)
     if (game.tomeUpgradesBought[10]) game.goldPerSecond = game.goldPerSecond.pow(game.blood.add(1).log10().add(1))
   }
+	if (game.milestones > 0) game.goldPerSecond = game.goldPerSecond.pow(milestone1Bonus.add(1))
     
   //Gold/click formula and multipliers
   if (game.magicUpgradesBought[8]) {game.goldPerClick = game.fireUpgrade3Bought.pow(12).mul(4).add(1)}
@@ -1375,6 +1379,8 @@ function updateSmall() {
     if (game.holyOctahedronUpgradesBought[1]) game.goldPerClick = game.goldPerClick.mul(1e250)
     if (game.tomeUpgradesBought[10]) game.goldPerClick = game.goldPerClick.pow(game.blood.add(1).log10().add(1))
   }
+	if (game.milestones > 0) game.goldPerClick = game.goldPerClick.pow(milestone1Bonus.add(1))
+	
   document.getElementById("gold").textContent = format(game.gold, 0)
   document.getElementById("goldPerSecond").textContent = format(game.goldPerSecond, 0)
   document.getElementById("goldPerClick").textContent = format(game.goldPerClick, 0)
@@ -1409,6 +1415,8 @@ function updateSmall() {
       else if (game.currentHellLayer >= 4) game.firePerSecond = new Decimal(0)
     }
   }
+	if (game.milestones > 0) game.firePerSecond = game.firePerSecond.pow(milestone1Bonus.add(1))
+	
   document.getElementById("fire").textContent = format(game.fire, 0)
   document.getElementById("firePerSecond").textContent = format(game.firePerSecond, 0)
   
@@ -1462,6 +1470,7 @@ function updateSmall() {
       else if (game.currentHellLayer == 3 || game.currentHellLayer == 4) game.platinumToGet = game.platinumToGet.add(1).log10()
       else if (game.currentHellLayer == 5) game.platinumToGet = game.platinumToGet.add(1).log10().pow(0.5)
     }
+	  if (game.milestones > 0) game.platinumToGet = game.platinumToGet.pow(milestone1Bonus.add(1))
     game.platinumToGet = game.platinumToGet.floor()
     document.getElementById("platinumToGet").textContent = format(game.platinumToGet, 0)
     if (game.platinumToGet.gt(game.bestPlatinumToGet)) game.bestPlatinumToGet = game.platinumToGet
@@ -1540,6 +1549,7 @@ function updateSmall() {
     if (game.darkMagicUpgradesBought[0]) game.magicScoreToGet = game.magicScoreToGet.pow(1.3)
     if (game.holyTetrahedronUpgradesBought[1]) game.magicScoreToGet = game.magicScoreToGet.pow(2)
     if (game.holyOctahedronUpgradesBought[5]) game.magicScoreToGet = game.magicScoreToGet.pow(100)
+	  if (game.milestones > 0) game.magicScoreToGet = game.magicScoreToGet.pow(milestone1Bonus.add(1))
     game.magicScoreToGet = game.magicScoreToGet.floor()
     if (game.unlockedAchievements[7] > 1) {
       game.magicScore1 = Decimal.max(game.magicScoreToGet, game.magicScore1);
@@ -1602,6 +1612,7 @@ function updateSmall() {
       else if (game.currentHellLayer == 3 || game.currentHellLayer == 4) game.uraniumToGet = game.uraniumToGet.add(1).log10()
       else if (game.currentHellLayer == 5) game.uraniumToGet = game.uraniumToGet.add(1).log10().pow(0.5)
     }
+	  if (game.milestones > 0) game.uraniumToGet = game.uraniumToGet.pow(milestone1Bonus.add(1))
     game.uraniumToGet = game.uraniumToGet.floor()
     document.getElementById("uraniumToGet").textContent = format(game.uraniumToGet, 0)
     if (game.uraniumToGet.gt(game.bestUraniumToGet)) game.bestUraniumToGet = game.uraniumToGet
@@ -1620,7 +1631,8 @@ function updateSmall() {
     if (game.plutoniumUpgradesBought[2] > 0) game.cyanSigilsToGet = game.cyanSigilsToGet.mul(game.plutonium.add(1).pow(0.5).mul(10).pow(game.plutoniumUpgradesBought[2]))
     if (game.holyTetrahedronUpgradesBought[2]) game.cyanSigilsToGet = game.cyanSigilsToGet.mul(1e50)
 		if (game.unlocks >= 34 && game.deathEssenceUpgradesBought[1].gt(0)) game.cyanSigilsToGet = game.cyanSigilsToGet.mul(new Decimal(10).pow(new Decimal(2).pow(game.deathEssenceUpgradesBought[1].pow(0.5)).mul(1e10)))
-    game.cyanSigilsToGet = game.cyanSigilsToGet.round()
+    if (game.milestones > 0) game.cyanSigilsToGet = game.cyanSigilsToGet.pow(milestone1Bonus.add(1))
+	  game.cyanSigilsToGet = game.cyanSigilsToGet.round()
     document.getElementById("cyanSigils").textContent = format(game.cyanSigils, 0)
     document.getElementById("cyanSigilsToGet").textContent = format(game.cyanSigilsToGet, 0)
     document.getElementsByClassName("resourceText")[7].textContent = format(game.cyanSigils, 0)
@@ -1639,6 +1651,7 @@ function updateSmall() {
     if (game.unlocks >= 15) game.blueSigilsToGet = game.blueSigilsToGet.mul(game.highestKnowledge.div(3).pow(0.7).add(1))
     if (game.unlocks >= 18) game.blueSigilsToGet = game.blueSigilsToGet.mul(game.blood.pow(2).add(1))
     if (game.plutoniumUpgradesBought[2] > 0) game.blueSigilsToGet = game.blueSigilsToGet.mul(game.plutonium.add(1).pow(0.5).mul(10).pow(game.plutoniumUpgradesBought[2]))
+	  if (game.milestones > 0) game.blueSigilsToGet = game.blueSigilsToGet.pow(milestone1Bonus.add(1))
     game.blueSigilsToGet = game.blueSigilsToGet.round()
     document.getElementById("blueSigils").textContent = format(game.blueSigils, 0)
     document.getElementById("blueSigilsToGet").textContent = format(game.blueSigilsToGet, 0)
@@ -1656,7 +1669,8 @@ function updateSmall() {
     if (game.unlocks >= 15) game.indigoSigilsToGet = game.indigoSigilsToGet.mul(game.highestKnowledge.div(3).pow(0.7).add(1))
     if (game.unlocks >= 18) game.indigoSigilsToGet = game.indigoSigilsToGet.mul(game.blood.pow(2).add(1))
     if (game.plutoniumUpgradesBought[2] > 0) game.indigoSigilsToGet = game.indigoSigilsToGet.mul(game.plutonium.add(1).pow(0.5).mul(10).pow(game.plutoniumUpgradesBought[2]))
-    game.indigoSigilsToGet = game.indigoSigilsToGet.round()
+    if (game.milestones > 0) game.indigoSigilsToGet = game.indigoSigilsToGet.pow(milestone1Bonus.add(1))
+	  game.indigoSigilsToGet = game.indigoSigilsToGet.round()
     document.getElementById("indigoSigils").textContent = format(game.indigoSigils, 0)
     document.getElementsByClassName("resourceText")[9].textContent = format(game.indigoSigils, 0)
     document.getElementById("indigoSigilEffect").textContent = format(game.indigoSigils.add(1).pow(4), 0)
@@ -1673,6 +1687,7 @@ function updateSmall() {
     if (game.unlocks >= 15) game.violetSigilsToGet = game.violetSigilsToGet.mul(game.highestKnowledge.div(3).pow(0.7).add(1))
     if (game.unlocks >= 18) game.violetSigilsToGet = game.violetSigilsToGet.mul(game.blood.pow(2).add(1))
     if (game.plutoniumUpgradesBought[2] > 0) game.violetSigilsToGet = game.violetSigilsToGet.mul(game.plutonium.add(1).pow(0.5).mul(10).pow(game.plutoniumUpgradesBought[2]))
+	  if (game.milestones > 0) game.violetSigilsToGet = game.violetSigilsToGet.pow(milestone1Bonus.add(1))
     game.violetSigilsToGet = game.violetSigilsToGet.round()
     document.getElementById("violetSigils").textContent = format(game.violetSigils, 0)
     document.getElementsByClassName("resourceText")[10].textContent = format(game.violetSigils, 0)
@@ -1691,6 +1706,7 @@ function updateSmall() {
     if (game.plutoniumUpgradesBought[2] > 0) game.pinkSigilsToGet = game.pinkSigilsToGet.mul(game.plutonium.add(1).pow(0.5).mul(10).pow(game.plutoniumUpgradesBought[2]))
     if (game.holyTetrahedronUpgradesBought[8]) game.pinkSigilsToGet = game.pinkSigilsToGet.pow(2)
 		if (game.unlocks >= 33) game.pinkSigilsToGet = game.pinkSigilsToGet.pow(new Decimal(1.1).pow(game.lightEssenceUpgradesBought[2].pow(0.5)))
+	  if (game.milestones > 0) game.pinkSigilsToGet = game.pinkSigilsToGet.pow(milestone1Bonus.add(1))
     game.pinkSigilsToGet = game.pinkSigilsToGet.round()
     document.getElementById("pinkSigils").textContent = format(game.pinkSigils, 0)
     document.getElementsByClassName("resourceText")[11].textContent = format(game.pinkSigils, 0)
@@ -1706,6 +1722,7 @@ function updateSmall() {
     document.getElementsByClassName("resourceText")[12].textContent = format(game.knowledge, 0)
     document.getElementById("highestKnowledge").textContent = format(game.highestKnowledge, 0)
     game.knowledgeTradeLevelCap = Decimal.min(game.highestKnowledge.add(1).log2().mul(1.6).add(3).floor(), 9999)
+	  if (game.milestones > 0) game.knowledgeTradeLevelCap = game.knowledgeTradeLevelCap.pow(milestone1Bonus.add(1))
     if (game.knowledgeTradeLevelCap.lt(1e308)) {
       document.getElementById("knowledgeLevelRange").max = game.knowledgeTradeLevelCap.mag
       document.getElementById("knowledgeLevelInput").max = game.knowledgeTradeLevelCap.mag
@@ -1736,6 +1753,7 @@ function updateSmall() {
 		if (game.unlocks >= 29) game.blueFirePerSecond = game.blueFirePerSecond.pow(game.planetEffect)
 		if (game.unlocks >= 31) game.blueFirePerSecond = game.blueFirePerSecond.pow(game.plagueUpgradesBought[2].pow(0.5).mul(10).add(1))
 		if (game.unlocks >= 32) game.blueFirePerSecond = game.blueFirePerSecond.pow(game.oganesson.log10().div(10).add(1).pow(game.oganessonUpgradesBought[4]))
+	  if (game.milestones > 0) game.blueFirePerSecond = game.blueFirePerSecond.pow(milestone1Bonus.add(1))
     document.getElementById("blueFire").textContent = format(game.blueFire, 0)
     document.getElementById("blueFirePerSecond").textContent = format(game.blueFirePerSecond, 0)
     document.getElementsByClassName("resourceText")[14].textContent = format(game.blueFire, 0)
@@ -1773,6 +1791,7 @@ function updateSmall() {
 				if (game.holyOctahedronUpgradesBought[2]) game.bloodPerSecond = game.bloodPerSecond.mul(new Decimal(1e9).pow(game.currentHellLayer))
 				if (game.holyDodecahedronUpgradesBought[1]) game.bloodPerSecond = game.bloodPerSecond.mul(game.holyDodecahedrons.add(1).pow(10))
 				if (game.holyTetrahedronUpgradesBought[6] && game.bloodPerSecond.lt(1e9)) game.bloodPerSecond = new Decimal(1e9)
+				if (game.milestones > 0) game.bloodPerSecond = game.bloodPerSecond.pow(milestone1Bonus.add(1))
 			}
 			else {game.bloodPerSecond = new Decimal(0)}
 		}
@@ -1795,6 +1814,7 @@ function updateSmall() {
     if (game.unlocks >= 26) game.plutoniumToGet = game.plutoniumToGet.pow(game.holyFireUpgradesBought[3].pow(0.6).mul(2.5).add(1))
 		if (game.unlocks >= 32) game.plutoniumToGet = game.plutoniumToGet.pow(game.oganessonUpgradesBought[0] / 50 + 1)
 		if (game.unlocks >= 36) game.plutoniumToGet = game.plutoniumToGet.pow(new Decimal(1.2).pow(game.finalityEssenceUpgradesBought[2].pow(0.5)))
+	  if (game.milestones > 0) game.plutoniumToGet = game.plutoniumToGet.pow(milestone1Bonus.add(1))
     game.plutoniumToGet = game.plutoniumToGet.floor()
     document.getElementById("plutoniumToGet").textContent = format(game.plutoniumToGet, 0)
     if (game.plutoniumToGet.gt(game.bestPlutoniumToGet)) game.bestPlutoniumToGet = game.plutoniumToGet
@@ -1811,6 +1831,7 @@ function updateSmall() {
     if (game.holyOctahedronUpgradesBought[0]) game.redSigilsToGet = game.redSigilsToGet.mul(game.holyTetrahedrons.add(1))
     if (game.holyDodecahedronUpgradesBought[0]) game.redSigilsToGet = game.redSigilsToGet.mul(game.holyOctahedrons.add(1))
     if (game.holyDodecahedronUpgradesBought[3]) game.redSigilsToGet = game.redSigilsToGet.mul(1e20)
+	  if (game.milestones > 0) game.redSigilsToGet = game.redSigilsToGet.pow(milestone1Bonus.add(1))
     game.redSigilsToGet = game.redSigilsToGet.round()
     document.getElementById("redSigils").textContent = format(game.redSigils, 0)
     document.getElementsByClassName("resourceText")[17].textContent = format(game.redSigils, 0)
@@ -1828,6 +1849,7 @@ function updateSmall() {
     if (game.holyTetrahedronUpgradesBought[3]) game.orangeSigilsToGet = game.orangeSigilsToGet.mul(10)
     if (game.holyOctahedronUpgradesBought[0]) game.orangeSigilsToGet = game.orangeSigilsToGet.mul(game.holyTetrahedrons.add(1))
     if (game.holyDodecahedronUpgradesBought[0]) game.orangeSigilsToGet = game.orangeSigilsToGet.mul(game.holyOctahedrons.add(1))
+	  if (game.milestones > 0) game.orangeSigilsToGet = game.orangeSigilsToGet.pow(milestone1Bonus.add(1))
     game.orangeSigilsToGet = game.orangeSigilsToGet.round()
     document.getElementById("orangeSigils").textContent = format(game.orangeSigils, 0)
     document.getElementsByClassName("resourceText")[18].textContent = format(game.orangeSigils, 0)
@@ -1845,6 +1867,7 @@ function updateSmall() {
     if (game.holyTetrahedronUpgradesBought[3]) game.yellowSigilsToGet = game.yellowSigilsToGet.mul(10)
     if (game.holyOctahedronUpgradesBought[0]) game.yellowSigilsToGet = game.yellowSigilsToGet.mul(game.holyTetrahedrons.add(1))
     if (game.holyDodecahedronUpgradesBought[0]) game.yellowSigilsToGet = game.yellowSigilsToGet.mul(game.holyOctahedrons.add(1))
+	  if (game.milestones > 0) game.yellowSigilsToGet = game.yellowSigilsToGet.pow(milestone1Bonus.add(1))
     game.yellowSigilsToGet = game.yellowSigilsToGet.round()
     document.getElementById("yellowSigils").textContent = format(game.yellowSigils, 0)
     document.getElementsByClassName("resourceText")[19].textContent = format(game.yellowSigils, 0)
@@ -1864,6 +1887,7 @@ function updateSmall() {
 			game.holyTetrahedronsToGet = game.holyTetrahedronsToGet.mul(holyFireUpgrade2Effect)
 		}
 		if (game.voidMagicUpgradesBought[10] == true) game.holyTetrahedronsToGet = game.holyTetrahedronsToGet.mul(game.planets.pow(1.5).add(1))
+	  if (game.milestones > 0) game.holyTetrahedronsToGet = game.holyTetrahedronsToGet.pow(milestone1Bonus.add(1))
     document.getElementById("holyTetrahedrons").textContent = format(game.holyTetrahedrons, 0)
     document.getElementsByClassName("resourceText")[20].textContent = format(game.holyTetrahedrons, 0)
     document.getElementById("holyTetrahedronsToGet").textContent = format(game.holyTetrahedronsToGet.floor(), 0)
@@ -1877,6 +1901,7 @@ function updateSmall() {
     if (game.voidMagicUpgradesBought[0]) game.holyOctahedronsToGet = game.holyOctahedronsToGet.mul(10)
 		if (game.voidMagicUpgradesBought[10] == true) game.holyOctahedronsToGet = game.holyOctahedronsToGet.mul(game.planets.pow(1.5).add(1))
 		if (game.voidMagicUpgradesBought[9] == true) game.holyOctahedronsToGet = game.holyOctahedronsToGet.pow(1.25)
+	  if (game.milestones > 0) game.holyOctahedronsToGet = game.holyOctahedronsToGet.pow(milestone1Bonus.add(1))
     document.getElementById("holyOctahedrons").textContent = format(game.holyOctahedrons, 0)
     document.getElementsByClassName("resourceText")[21].textContent = format(game.holyOctahedrons, 0)
     document.getElementById("holyOctahedronsToGet").textContent = format(game.holyOctahedronsToGet.floor(), 0)
@@ -1894,6 +1919,7 @@ function updateSmall() {
 		if (game.unlocks >= 29) game.holyFirePerSecond = game.holyFirePerSecond.pow(game.planetEffect)
 		if (game.unlocks >= 31) game.holyFirePerSecond = game.holyFirePerSecond.pow(game.plagueUpgradesBought[3].pow(0.5).div(10).add(1))
 		if (game.unlocks >= 36) game.holyFirePerSecond = game.holyFirePerSecond.pow(new Decimal(1.1).pow(game.finalityEssenceUpgradesBought[1].pow(0.5)))
+	  if (game.milestones > 0) game.holyFirePerSecond = game.holyFirePerSecond.pow(milestone1Bonus.add(1))
     document.getElementById("holyFire").textContent = format(game.holyFire, 0)
     document.getElementById("holyFirePerSecond").textContent = format(game.holyFirePerSecond, 0)
     document.getElementsByClassName("resourceText")[22].textContent = format(game.holyFire, 0)
@@ -1970,6 +1996,7 @@ function updateSmall() {
 		if (game.voidMagicUpgradesBought[13] == true) game.planetEffect = game.planetEffect.mul(1.2)
 		if (game.unlocks >= 31) game.planetEffect = game.planetEffect.mul(game.plagueUpgradesBought[1].add(1).log10().div(4).add(1))
 		if (game.unlocks >= 32) game.planetEffect = game.planetEffect.add(game.oganessonUpgradesBought[2] * 2)
+		if (game.milestones > 0) game.planetEffect = game.planetEffect.pow(milestone1Bonus.add(1))
 		if (game.planetEffect.gte(600)) {
 			game.planetEffect = game.planetEffect.mul(600).pow(0.5)
 			document.getElementById("planetEffectSoftcap").textContent = " (softcapped)"
@@ -1996,6 +2023,7 @@ function updateSmall() {
 		if (game.unlocks >= 34) game.cosmicPlaguePerSecond = game.cosmicPlaguePerSecond.mul(new Decimal(10).pow(game.deathEssenceUpgradesBought[3].pow(0.7)))
 		if (game.unlocks >= 35 && (game.nuclearPastaState == 3 || game.nuclearPastaUpgradesBought[2])) game.cosmicPlaguePerSecond = game.cosmicPlaguePerSecond.mul(Decimal.min(new Decimal(10).pow(game.nuclearPasta.pow(0.7)), "1e1500"))
 		else if (game.unlocks >= 35 && game.nuclearPastaState == 4) game.cosmicPlaguePerSecond = new Decimal(0)
+		if (game.milestones > 0) game.cosmicPlaguePerSecond = game.cosmicPlaguePerSecond.pow(milestone1Bonus.add(1))
 		document.getElementById("cosmicPlague").textContent = format(game.cosmicPlague, 0)
 		document.getElementsByClassName("resourceText")[25].textContent = format(game.cosmicPlague, 0)
 		document.getElementById("cosmicPlaguePerSecond").textContent = format(game.cosmicPlaguePerSecond, 0)
@@ -2014,6 +2042,7 @@ function updateSmall() {
 		if (game.unlockedAchievements[24] > 2) game.oganessonPerSecond = game.oganessonPerSecond.mul(10)
 		if (game.unlocks >= 33) game.oganessonPerSecond = game.oganessonPerSecond.mul(new Decimal(1.5).pow(game.darkEssenceUpgradesBought[1].pow(0.6)))
 		if (game.unlocks >= 35 && game.nuclearPastaState == 5) game.oganessonPerSecond = game.oganessonPerSecond.mul(Decimal.min(new Decimal(1.5).pow(game.nuclearPasta.pow(0.6)), 1e30))
+		if (game.milestones > 0) game.oganessonPerSecond = game.oganessonPerSecond.pow(milestone1Bonus.add(1))
 		document.getElementById("oganesson").textContent = format(game.oganesson, 0)
 		document.getElementsByClassName("resourceText")[26].textContent = format(game.oganesson, 0)
 		document.getElementById("oganessonPerSecond").textContent = format(game.oganessonPerSecond, 0)
@@ -2038,6 +2067,7 @@ function updateSmall() {
 		else if (game.unlocks >= 35 && game.nuclearPastaState == 3) game.lightEssencePerSecond = new Decimal(0)
 		if (game.unlocks >= 36) game.lightEssencePerSecond = game.lightEssencePerSecond.mul(new Decimal(10000).pow(game.finalityEssenceUpgradesBought[3].pow(0.5)))
 		if (game.unlocks >= 37) game.lightEssencePerSecond = game.lightEssencePerSecond.mul(game.finalityCubeEffect)
+		if (game.milestones > 0) game.lightEssencePerSecond = game.lightEssencePerSecond.pow(milestone1Bonus.add(1))
 		game.darkEssencePerSecond = game.lightEssence.add(1).log10().add(1)
 		game.darkEssencePerSecond = game.darkEssencePerSecond.mul(new Decimal(2).pow(game.darkEssenceUpgradesBought[0].pow(0.5)))
 		game.darkEssencePerSecond = game.darkEssencePerSecond.mul(game.oganessonUpgradesBought[6] ** 1.2 * 2 + 1)
@@ -2051,6 +2081,7 @@ function updateSmall() {
 		else if (game.unlocks >= 35 && game.nuclearPastaState == 3) game.darkEssencePerSecond = new Decimal(0)
 		if (game.unlocks >= 36) game.darkEssencePerSecond = game.darkEssencePerSecond.mul(new Decimal(10000).pow(game.finalityEssenceUpgradesBought[3].pow(0.5)))
 		if (game.unlocks >= 37) game.darkEssencePerSecond = game.darkEssencePerSecond.mul(game.finalityCubeEffect)
+		if (game.milestones > 0) game.darkEssencePerSecond = game.darkEssencePerSecond.pow(milestone1Bonus.add(1))
 		document.getElementById("lightEssence").textContent = format(game.lightEssence, 0)
 		document.getElementsByClassName("resourceText")[27].textContent = format(game.lightEssence, 0)
 		document.getElementById("lightEssencePerSecond").textContent = format(game.lightEssencePerSecond, 0)
@@ -2079,6 +2110,7 @@ function updateSmall() {
 		if (game.deathEssencePerSecond.gt(1e20)) game.deathEssencePerSecond = game.deathEssencePerSecond.mul(1e20).pow(0.5)
 		if (game.dragonStage >= 11) game.deathEssencePerSecond = game.deathEssencePerSecond.mul(100)
 		if (game.unlocks >= 37) game.deathEssencePerSecond = game.deathEssencePerSecond.mul(game.finalityCubeEffect)
+		if (game.milestones > 0) game.deathEssencePerSecond = game.deathEssencePerSecond.pow(milestone1Bonus.add(1))
 		document.getElementById("deathEssence").textContent = format(game.deathEssence, 0)
 		document.getElementsByClassName("resourceText")[29].textContent = format(game.deathEssence, 0)
 		document.getElementById("deathEssencePerSecond").textContent = format(game.deathEssencePerSecond, 0)
@@ -2149,6 +2181,7 @@ function updateSmall() {
 		if (game.unlockedAchievements[24] > 9) game.finalityEssencePerSecond = game.finalityEssencePerSecond.mul(100)
 		if (game.unlockedAchievements[24] > 10) game.finalityEssencePerSecond = game.finalityEssencePerSecond.mul(1e7)
 		if (game.unlockedAchievements[24] > 11) game.finalityEssencePerSecond = game.finalityEssencePerSecond.mul(1e28)
+		if (game.milestones > 0) game.finalityEssencePerSecond = game.finalityEssencePerSecond.pow(milestone1Bonus.add(1))
 		document.getElementById("finalityEssence").textContent = format(game.finalityEssence, 0)
 		document.getElementsByClassName("resourceText")[31].textContent = format(game.finalityEssence, 0)
 		document.getElementById("finalityEssencePerSecond").textContent = format(game.finalityEssencePerSecond, 0)
@@ -2168,6 +2201,7 @@ function updateSmall() {
 		game.finalityCubeEffect = new Decimal(100).pow(game.finalityCubes.pow(0.5))
 		game.finalityCubeEffect = game.finalityCubeEffect.mul(new Decimal(50000).pow(game.finalityBoosts.pow(0.8)))
 		game.finalityCubeEffect = game.finalityCubeEffect.mul(new Decimal(100000).pow(game.finalityBoostBoosts.pow(0.7)))
+		if (game.milestones > 0) game.finalityCubeEffect = game.finalityCubeEffect.pow(milestone1Bonus.add(1))
 		if (game.finalityCubeEffect.gt(1e100)) game.finalityCubeEffect = new Decimal(1e100)
 		document.getElementById("finalityCubeEffect").textContent = format(game.finalityCubeEffect, 0)
 	}
