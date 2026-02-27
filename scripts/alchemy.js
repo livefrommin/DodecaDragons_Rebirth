@@ -13,6 +13,7 @@ function unlockAlchemy() {
 //Converts gold to platinum
 function platinumConvert() {
   if (game.platinumConvertCooldown == 0 && game.platinumToGet > 0) {
+	 if (game.milestones >= 5) game.platinumToGet = game.platinumToGet.mul(2)
     game.platinum = game.platinum.add(game.platinumToGet)
     game.gold = new Decimal(0)
     game.platinumConvertCooldown = 3
@@ -162,6 +163,7 @@ function platinumMaxAll() {
 //Converts platinum to uranium
 function uraniumConvert() {
   if (game.uraniumConvertCooldown == 0 && game.uraniumToGet > 0) {
+	  if (game.milestones >= 5) game.uraninumToGet = game.uraninumToGet.mul(2)
     game.uranium = game.uranium.add(game.uraniumToGet)
     game.platinum = new Decimal(0)
     game.uraniumConvertCooldown = 3
@@ -259,6 +261,7 @@ function morePUupgrades() {
 //Converts uranium to plutonium
 function plutoniumConvert() {
   if (game.plutoniumConvertCooldown == 0 && game.plutoniumToGet > 0) {
+	  if (game.milestones >= 5) game.plutoniumToGet = game.plutoniumToGet.mul(2)
     game.plutonium = game.plutonium.add(game.plutoniumToGet)
     game.uranium = new Decimal(0)
     game.plutoniumConvertCooldown = 3
