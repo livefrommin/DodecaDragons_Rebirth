@@ -442,6 +442,14 @@ function reset() {
 
 reset()
 
+function rebirth() { 
+    let milestones = game.milestones + 1;
+    reset(); 
+    game.milestones = milestones  
+    save();
+    location.reload();
+}
+
 //If the user confirms the hard reset, resets all variables, saves and refreshes the page
 function hardReset() {
   if (confirm("Are you sure you want to reset? You will lose everything!")) {
