@@ -48,6 +48,8 @@ const nuclearPastaPositiveEffects = ["Boost to light/dark essence gain", "Boost 
 const nuclearPastaNegativeEffects = ["&#8202;&#8202;Zero death essence gain", "&#8202;&#8202;Gold amount does not increase", "Zero dark/light essence gain", "Zero cosmic plague gain", "&#8202;&#8202;Gold amount does not increase"]
 const nuclearPastaUpgradeCosts = ["ee7.5e6", "ee1.2e8", "ee2.5e8", "ee7.5e8"]
 
+const milestoneNames = ["Universal Singularity", "Primal Hyper-Inflation", "Arcane Combustion", "Strategic Mastery", "Alchemical Precision", "Resonant Frequency", "Forbidden Archives", "Sanguine Harvest", "Euclidean Perfection", "Solar Alignment", "Contagious Reach", "Pastafarian Prophecy", "Infinite Essence", "The Finality Loop"]
+const milestoneEffects = ["+1% exponent to all currencies for each milestone", "^1.05 of all dragon effects", "Magifold earning formula is better, based on fire", "Challenge score is 10% bigger", "All alchemy earnings are doubled", "Sigil powers gain are 10% bigger", "Knowledge trade limits are 50% bigger", "Blood gain is doubled", "Polyhedrons costs scaling 10% slower", "Planets and superclusters are 10% more effective", "Spore to plague formula is better", "Positive effects of pasta is slightly better, negative effects is minimizing gain instead of zeroing", "Automating essences upgrades", "All milestones are 50% more powerful"]
 const achievementNames = [
   //Gold
   ["Starting strong", "Growing stronger", "The heap", "Motherlode", "BEZOS BEZOS BEZOS", "Unending mound of cash", "Multiversal", "Endless realm of coins", "Loaded", "Mega-loaded (???)", "Sbiisics", "On my dime!"],
