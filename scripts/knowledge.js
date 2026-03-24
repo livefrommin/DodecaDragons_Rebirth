@@ -20,6 +20,7 @@ function randomizeKnowledgeTrade(trade) {
 		if (game.voidMagicUpgradesBought[11] == true) game["knowledgeTrade" + trade + "Reward"] = game["knowledgeTrade" + trade + "Reward"].mul("e12000")
 		if (game.unlocks >= 33) game["knowledgeTrade" + trade + "Reward"] = game["knowledgeTrade" + trade + "Reward"].mul(new Decimal(10).pow(new Decimal(2).pow(game.darkEssenceUpgradesBought[2].pow(0.5)).mul(5e9)))
     game["knowledgeTrade" + trade + "Reward"] = game["knowledgeTrade" + trade + "Reward"].floor()
+	if (game.milestones>=7) game["knowledgeTrade" + trade + "Reward"] = game["knowledgeTrade" + trade + "Reward"].mul(10) 
   }
 
   loadKnowledgeTrade(trade)
